@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Нармания](https://up.htmlacademy.ru/javascript/20/user/1208625).
-* Наставник: `Неизвестно`.
+* Наставник: [Дина Абрамова](https://htmlacademy.ru/profile/id1483099).
 
 ---
 
