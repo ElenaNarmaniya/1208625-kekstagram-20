@@ -43,8 +43,8 @@ var renderPicture = function (picture) {
   var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
   pictureElement.querySelector('.picture__img').src = picture.url; // вставляем в элемент шаблона фото
   pictureElement.querySelector('.picture__img').alt = picture.description; // вставляем в элемент шаблона описание
-  pictureElement.querySelector('.picture__comments').textContent = picture.likes; // вставляем в элемент шаблона лайки
-  pictureElement.querySelector('.picture__likes').textContent = picture.comments; // вставляем в элемент шаблона коммент.
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length; // вставляем в элемент шаблона лайки
+  pictureElement.querySelector('.picture__likes').textContent = picture.likes; // вставляем в элемент шаблона коммент.
   return pictureElement;
 };
 var fragment = document.createDocumentFragment();
