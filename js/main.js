@@ -34,42 +34,21 @@ var generatePhoto = function () {
 for (var i = 0; i < PHOTOS_NUMBERS; i++) {
   photos.push(generatePhoto());
 }
-// console.log(photos); // временно для наглядности
+console.log(photos); // временно для наглядности
 
-var makeElement = function (tagName, className) { // функция, создающая элемент с определенным именем тега и  именем класса из разметки
-  var element = document.createElement(tagName);
-  element.classList.add(className);
-  return element;
+var picturesSection = document.querySelector('.pictures'); // Контейнер для изображений от других пользователей - <section class="pictures  container">
+var imgUpload = document.querySelector('.img-upload'); // Поле для загрузки нового изображения на сайт
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); // содержимое шаблона
+var renderPicture = function (picture) {
+  var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
+  pictureElement.querySelector('.picture__img').src = picture.url; // вставляем в элемент шаблона фото
+  pictureElement.querySelector('.picture__img').alt = picture.description; // вставляем в элемент шаблона описание
+  pictureElement.querySelector('.picture__comments').textContent = picture.likes; // вставляем в элемент шаблона лайки
+  pictureElement.querySelector('.picture__likes').textContent = picture.comments; // вставляем в элемент шаблона коммент.
+  return pictureElement;
 };
-
-var createPicture = function (anchor) {
-  var anchorItem = makeElement('a', 'picture'); // создали ссылку а с классом picture
- 
-  var pictureItem = makeElement('img', 'picture__img'); // добавляем элементу a нужное изображение.
-  pictureItem.src = anchor.url; // адрес изображения
-  pictureItem.alt = anchor.description; // описание изображения
-  anchorItem.appendChild(pictureItem); // добавка изображения к ссылке а в разметке
- 
- var infoItem = makeElement('p', 'picture__info'); // создание р с классом picture__info
-  anchorItem.appendChild(infoItem);
-
- var likesItem = makeElement('span', 'picture__likes'); // добавляем элементу р кол-во лайков.
-  likesItem.textContent = anchor.likes; // кол-во лайков к фото
-  infoItem.appendChild(likesItem); // добавляем в разметку
-
-var comentsItem = makeElement('span', 'picture__comments'); // добавляем элементу р кол-во комментариев
-  omentsItem.textContent = COMMENTS_NUMBERS;
-  infoItem.appendChild(comentsItem); // добавляем в разметку
-
-  return anchorItem // возвращаем готовую ссылку
-};
-
-var renderPicture = function (goods) { // заполняем template ссылками
- var pictureList = document.getElementById('picture');
-  for (var k = 0; k < goods.length; k++) {
-   var cardItem = createPicture(goods[i]);
-   pictureList.appendChild(cardItem);
-  }
-};
- 
-renderPicture(photos); //вызываем функцию с массивом  photos
+var fragment = document.createDocumentFragment();
+for (var g = 0; g < photos.length; g++) {
+  fragment.appendChild(renderPicture(photos[g]));
+}
+picturesSection.insertBefore(fragment, imgUpload); // вставляем
