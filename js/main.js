@@ -67,15 +67,14 @@ var showBigPhoto = function (photo) {
   var socialComments = sectionBigPicture.querySelector('.social__comments'); // ul-список Комментариев к изображению
   var socialComment = socialComments.querySelectorAll('.social__comment'); // li-Комментарий к изображению
 
-  for (var h = 0; h < socialComment.length; h++) {
-    for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
-      var renderSocialComment = function () {
-        socialComment[h].querySelector('img').alt = photo.comments[k].name; // !!!! почему-то пишет не может найти -  undifined
-        socialComment[h].querySelector('img').src = photo.comments[k].avatar;
-        socialComment[h].querySelector('.social__text').textContent = photo.comments[k].message;
-      };
-      renderSocialComment();
+
+  for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
+    var renderSocialComment = function () {
+      socialComment[k].querySelector('img').alt = photo.comments[k].name; // !!!! почему-то пишет не может найти -  undifined
+      socialComment[k].querySelector('img').src = photo.comments[k].avatar;
+      socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
     }
+    renderSocialComment();
   }
 
   var countComments = sectionBigPicture.querySelector('.social__comment-count');
