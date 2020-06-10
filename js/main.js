@@ -34,7 +34,7 @@ var generatePhoto = function () {
 for (var i = 0; i < PHOTOS_NUMBER; i++) {
   photos.push(generatePhoto());
 }
-console.log(photos);
+// console.log(photos);
 
 var picturesSection = document.querySelector('.pictures'); // Контейнер для изображений от других пользователей - <section class="pictures  container">
 var imgUpload = document.querySelector('.img-upload'); // Поле для загрузки нового изображения на сайт
@@ -73,7 +73,7 @@ var showBigPhoto = function (photo) {
       socialComment[k].querySelector('img').alt = photo.comments[k].name; // !!!! почему-то пишет не может найти -  undifined
       socialComment[k].querySelector('img').src = photo.comments[k].avatar;
       socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
-    }
+    };
     renderSocialComment();
   }
 
