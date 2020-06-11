@@ -64,24 +64,17 @@ var showBigPhoto = function (photo) {
   bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
   bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
   // работа с массивом комментрариев
-  var socialComments = sectionBigPicture.querySelector('.social__comments'); // ul-список Комментариев к изображению
-  var socialComment = socialComments.querySelectorAll('.social__comment'); // li-Комментарий к изображению
+  var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
 
 
   for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
-    var renderSocialComment = function () {
-      socialComment[k].querySelector('img').alt = photo.comments[k].name; // !!!! почему-то пишет не может найти -  undifined
-      socialComment[k].querySelector('img').src = photo.comments[k].avatar;
-      socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
-    };
-    renderSocialComment();
+    socialComment[k].querySelector('img').alt = photo.comments[k].name;
+    socialComment[k].querySelector('img').src = photo.comments[k].avatar;
+    socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
   }
 
-  var countComments = sectionBigPicture.querySelector('.social__comment-count');
-  var loadComments = sectionBigPicture.querySelector('.comments-loader');
-  countComments.classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
-  loadComments.classList.add('hidden');
-  var body = document.querySelector('body'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
-  body.classList.add('modal-open');
+  sectionBigPicture.querySelector('.social__comment-count').classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
+  sectionBigPicture.querySelector('.comments-loader').classList.add('hidden');
+  document.querySelector('body').classList.add('modal-open'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
 };
 showBigPhoto(photos[0]);
