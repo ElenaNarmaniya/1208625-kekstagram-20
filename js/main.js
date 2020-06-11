@@ -14,7 +14,7 @@ var createRandom = function (min, max) {
 
 var generateComment = function () {
   var comment = {};
-  comment.avatar = 'img/' + createRandom(1, 6) + '.svg';
+  comment.avatar = 'img/avatar-' + createRandom(1, 6) + '.svg';
   comment.message = photosComments[createRandom(0, photosComments.length - 1)];
   comment.name = authorComments[createRandom(0, authorComments.length - 1)];
   return comment;
@@ -50,5 +50,31 @@ var renderPicture = function (picture) {
 var fragment = document.createDocumentFragment();
 for (var g = 0; g < photos.length; g++) {
   fragment.appendChild(renderPicture(photos[g]));
-}
+} // заполняем фрагмент данными из массива photos
 picturesSection.insertBefore(fragment, imgUpload); // вставляем
+
+// показываем фото в полном размере и выводим описание, количество лайков, комментарии
+var showBigPhoto = function (photo) {
+  var sectionBigPicture = document.querySelector('.big-picture'); // нашли секцию, в которой будет показ. фото
+  sectionBigPicture.classList.remove('hidden'); // удаление класса hidden секции показа фото
+  var bigPictureImg = sectionBigPicture.querySelector('.big-picture__img'); // находим div с фото, которое должно стать полноразмерным
+  var bigPictureSocial = sectionBigPicture.querySelector('.big-picture__social'); // находим div с Информациtq об изображении: Подпись, комментарии, количество лайков
+  bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
+  bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
+  bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
+  bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
+  // работа с массивом комментрариев
+  var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
+
+
+  for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
+    socialComment[k].querySelector('img').alt = photo.comments[k].name;
+    socialComment[k].querySelector('img').src = photo.comments[k].avatar;
+    socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
+  }
+
+  sectionBigPicture.querySelector('.social__comment-count').classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
+  sectionBigPicture.querySelector('.comments-loader').classList.add('hidden');
+  document.querySelector('body').classList.add('modal-open'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
+};
+showBigPhoto(photos[0]);
