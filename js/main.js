@@ -5,13 +5,11 @@ var photosDescription = ['голубая лагуна', 'путь к пляжу'
 var photosComments = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!']; // 6 комментариев
 var authorComments = ['Алексей', 'Толик', 'Артем', 'Валера', 'Гена', 'Руслан'];
 var photos = []; // массив из 25 фото с описанием и комментариями
-
 var createRandom = function (min, max) {
   // случайное число от min до (max+1)
   var rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 };
-
 var generateComment = function () {
   var comment = {};
   comment.avatar = 'img/avatar-' + createRandom(1, 6) + '.svg';
@@ -19,7 +17,6 @@ var generateComment = function () {
   comment.name = authorComments[createRandom(0, authorComments.length - 1)];
   return comment;
 }; // функция создания 1 объект-комментарий
-
 var generatePhoto = function () {
   var object = {};
   object.url = 'photos/' + createRandom(1, 25) + '.jpg';
@@ -35,7 +32,7 @@ for (var i = 0; i < PHOTOS_NUMBER; i++) {
   photos.push(generatePhoto());
 }
 // console.log(photos);
-
+var bodyModalOpen = document.querySelector('body');
 var picturesSection = document.querySelector('.pictures'); // Контейнер для изображений от других пользователей - <section class="pictures  container">
 var imgUpload = document.querySelector('.img-upload'); // Поле для загрузки нового изображения на сайт
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); // содержимое шаблона
@@ -52,7 +49,6 @@ for (var g = 0; g < photos.length; g++) {
   fragment.appendChild(renderPicture(photos[g]));
 } // заполняем фрагмент данными из массива photos
 picturesSection.insertBefore(fragment, imgUpload); // вставляем
-
 // показываем фото в полном размере и выводим описание, количество лайков, комментарии
 var showBigPhoto = function (photo) {
   var sectionBigPicture = document.querySelector('.big-picture'); // нашли секцию, в которой будет показ. фото
@@ -63,19 +59,18 @@ var showBigPhoto = function (photo) {
   bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
   bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
   bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
+
   // работа с массивом комментрариев
   var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
-
-
+  // var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
   for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
     socialComment[k].querySelector('img').alt = photo.comments[k].name;
     socialComment[k].querySelector('img').src = photo.comments[k].avatar;
     socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
   }
-
   sectionBigPicture.querySelector('.social__comment-count').classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
   sectionBigPicture.querySelector('.comments-loader').classList.add('hidden');
-  document.querySelector('body').classList.add('modal-open'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
+  bodyModalOpen.classList.add('modal-open'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
 };
 // showBigPhoto(photos[0]); // прячем для работы с 3 заданием
 
@@ -92,43 +87,39 @@ var scaleValue = function (value) { // функция для подстанов�
   document.querySelector('.scale__control--value').value = value; // в инпут поставить указанное значение размера фото в %
 };
 
-var uploadFormButton = function () { // функция для показа поля редактирования изображения
+var showForm = function () { // функция для показа поля редактирования изображения
   imgUploadOverlay.classList.remove('hidden'); // показать Форму редактирования изображения
-  document.querySelector('body').classList.add('modal-open'); // добавление класса к body
-  scaleValue(SCALE_CONTROL); // загруженному фото подставить размер 100%
-  scaleImage(SCALE_IMAGE_CONTROL); // масштабирование фото 1:1
-  deleteHiddenEffect(); // показ поля изменения масштаба
+  bodyModalOpen.classList.add('modal-open'); // добавление класса к body
+  scaleValue(SCALE_VALUE); // загруженному фото подставить размер 100%
+  scaleImage(SCALE_IMAGE_VALUE); // масштабирование фото 1:1
+  removeClassHidden(); // показ поля изменения масштаба
   removeEffect(); // сброс с фото всех эффектов effects__preview--
-  uploadCancelButton.addEventListener('click', cancelFormButton); // реагирование на кнопку Закрыть
-  document.addEventListener('keydown', closeKeyCode); // реагирование на Escape
+  uploadCancelButton.addEventListener('click', closeFormCross); // реагирование на кнопку Закрыть
+  document.addEventListener('keydown', closeFormKeyCode); // реагирование на Escape
 };
 
-var cancelFormButton = function () { // реализация закрытия поля для редактирования фото по нажатию на кнопку
+var closeFormCross = function () { // реализация закрытия поля для редактирования фото по нажатию на кнопку
   imgUploadOverlay.classList.add('hidden'); // добавляем класс hidden полю для редакт. фото
-  document.querySelector('body').classList.remove('modal-open'); // удалили класс modal-open с body
+  bodyModalOpen.classList.remove('modal-open'); // удалили класс modal-open с body
   imgUploadForm.reset(); // восстанавливаем стандартные значения всем элементам большой формы загрузки и редактирования фото
-  uploadCancelButton.removeEventListener('click', cancelFormButton); // по клику на кнопку закрытия формы скрываем форму
+  uploadCancelButton.removeEventListener('click', closeFormCross); // по клику на кнопку закрытия формы скрываем форму
 };
 
-var closeKeyCode = function (evt) { // реализация закрытия поля для редактирования фото по нажатию на Escape
+var closeFormKeyCode = function (evt) { // реализация закрытия поля для редактирования фото по нажатию на Escape
   if (evt.keyCode === 27 && textHashtags !== document.activeElement && textDescription !== document.activeElement) {
-    cancelFormButton(); // кроме случаев, когда курсор в поле ввода хештега или комментания
+    closeFormCross(); // кроме случаев, когда курсор в поле ввода хештега или комментания
   }
 };
 
-uploadFileButton.addEventListener('change', uploadFormButton); // отлов изменений на поле Загрузить
+uploadFileButton.addEventListener('change', showForm); // отлов изменений на поле Загрузить
 
 // работа с ползунком
 
-var effectLevel = document.querySelector('.effect-level'); // поле fieldset с ползунеком
+var effectLevel = document.querySelector('.effect-level'); // поле fieldset с ползунком
 var effectLevelPin = effectLevel.querySelector('.effect-level__pin'); // кнопка-ползунок
 var effectLevelLine = effectLevel.querySelector('.effect-level__line'); // линия, по которой перемещается ползунок
 var effectLevelDepth = effectLevel.querySelector('.effect-level__depth'); // глубина эффекта - насыщенный цвет линии
 var effectLevelValue = effectLevel.querySelector('.effect-level__value'); // числовое значение эффекта
-
-var deleteHiddenEffect = function () { // удаление класса hidden. нужно при переключении эффектов на фото
-  effectLevel.classList.remove('hidden');
-};
 
 effectLevelPin.addEventListener('mousedown', function (evt) { // обработчик события при нажатии на ползунок
   evt.preventDefault();
@@ -139,7 +130,7 @@ effectLevelPin.addEventListener('mousedown', function (evt) { // обработ�
   var movePinMouse = function (moveEvt) { // функция для определения положения ползунка
     moveEvt.preventDefault();
 
-    var coords = startCoords - moveEvt.clientX; // shift=0 - знач. горизонт. коорд. ползунка при его движении
+    var coords = startCoords - moveEvt.clientX; // startCoords=0 - знач. горизонт. коорд. ползунка при его движении
     var pinCoordX = effectLevelPin.offsetLeft - coords; // коорд. ползунка = знач. горизонт. коорд. ползунка при его движении
     startCoords = moveEvt.clientX; // в начал. координату записали текущую координату положения ползунка
     if (!(pinCoordX < 0 || pinCoordX > lineWidth)) {
@@ -148,7 +139,19 @@ effectLevelPin.addEventListener('mousedown', function (evt) { // обработ�
       effectLevelValue.value = Math.round(pinPoint * 100); // числовое значение нахождения ползунка
       effectLevelDepth.style.width = pinPoint * 100 + '%'; // глубина эффекта в %
     }
+    if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
+      imgUploadOverlay.querySelector('.effects__preview--chrome').style.filter = 'grayscale(' + pinPoint + ')';
+    } else if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
+      imgUploadOverlay.querySelector('.effects__preview--sepia').style.filter = 'sepia(' + pinPoint + ')';
+    } else if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
+      imgUploadOverlay.querySelector('.effects__preview--marvin').style.filter = 'invert(' + pinPoint * 100 + '%' + ')';
+    } else if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
+      imgUploadOverlay.querySelector('.effects__preview--phobos').style.filter = 'blur(' + pinPoint * 3 + 'px' + ')';
+    } else if (imgUploadPreview.classList.contains('effects__preview--heat')) {
+      imgUploadOverlay.querySelector('.effects__preview--heat').style.filter = 'brightness(' + pinPoint * 3 + ')';
+    }
   };
+
   var deletePinMouse = function (upEvt) { // функция при отпускании клавиши мыши - удалить обработчики
     upEvt.preventDefault();
     document.removeEventListener('mousemove', movePinMouse);
@@ -160,8 +163,8 @@ effectLevelPin.addEventListener('mousedown', function (evt) { // обработ�
 });
 
 // Изменяем масштаб изображения
-var SCALE_CONTROL = '100%'; // размер фото = 100%
-var SCALE_IMAGE_CONTROL = 100; // переменная для масштабирования фото
+var SCALE_VALUE = '100%'; // размер фото = 100%
+var SCALE_IMAGE_VALUE = 100; // переменная для масштабирования фото
 var SCALE_CHANGE_STEP = 25; // шаг изменения масштаба
 var SCALE_MIN_VALUE = 25; // мин. значение
 var SCALE_MAX_VALUE = 100; // макс. значение
@@ -170,9 +173,9 @@ var scaleControlSmaller = scaleContainer.querySelector('.scale__control--smaller
 var scaleControlBigger = scaleContainer.querySelector('.scale__control--bigger'); // увеличить
 var scaleControlValue = scaleContainer.querySelector('.scale__control--value'); // значение изменения
 
-var scaleImage = function (scaValue) { // Функция масштабирования изображения
-  var newScale = scaValue / 100;
-  imgUploadPreview.setAttribute('style', 'transform: scale(' + newScale + ');');
+var scaleImage = function (value) { // Функция масштабирования изображения
+  var newScale = value / 100;
+  imgUploadPreview.style.transform = 'scale(' + newScale + ')';
 };
 
 var getValue = function () { // вернуть значение изменения в %
@@ -235,13 +238,17 @@ var applyEffect = function (style) { // функция добавления ст
   imgUploadPreview.classList.add(style); // добавление стиля загруженному фото
 };
 
+var removeClassHidden = function () { // удаление класса hidden  с поля fieldset с ползунком. нужно при переключении эффектов на фото
+  effectLevel.classList.remove('hidden');
+};
+
 var getEffectPreview = function (evt) {
   var evtTarget = evt.target;
 
   switch (evtTarget.id) {
     case 'effect-none':
       removeEffect();
-      deleteHiddenEffect();
+      removeClassHidden();
       effectLevel.classList.add('hidden');
       imgUploadPreview.classList.add('effects__preview--none');
       break;
@@ -275,18 +282,8 @@ var HASHTAG_PATTERN = /^([#]{1})([0-9a-zа-яё]{1,19})$/g; // пример хе
 var textHashtags = imgUploadForm.querySelector('.text__hashtags'); // инпут для хештегов 121 строка
 
 var getNewHashtags = function (inputString) { // функция для получения массива из строки-хештега
-  var hashtags = inputString.split(''); // разбиваем строку-хештег на массив
+  var hashtags = inputString.split(' '); // разбиваем строку-хештег на массив split по пробелу
   return hashtags;
-};
-
-var removeAdditionalSpaces = function (allHashtags) { // удаление дополнительных пробелов и получение массива из хештегов
-  var notEmptyHashtags = [];
-  for (var j = 0; j < allHashtags.length; j++) {
-    if (allHashtags[j] !== ' ') {
-      notEmptyHashtags.push(allHashtags[j]);
-    }
-  }
-  return notEmptyHashtags;
 };
 
 var pushMessageError = function (message, errMessages) { // функция для получения сообщения об ошибке
@@ -320,9 +317,8 @@ var createValidMessage = function (notEmptyHashtags) { // функция про�
 
 var createHashtagsKeyup = function () { // функция по обработке хештегов, введенных пользователем в инпут
   var inputValue = textHashtags.value.toLowerCase(); // берем значение из инпута ввода хештегов заглавными буквамии
-  var dirtyHashtags = getNewHashtags(inputValue); // создаем массив из хештега
-  var cleanHashtags = removeAdditionalSpaces(dirtyHashtags); // убираем лишние пробелы
-  var errors = createValidMessage(cleanHashtags); // создаем массив сообщений об ошибках в каждом хештеге
+  var newHashtags = getNewHashtags(inputValue); // создаем массив из хештега
+  var errors = createValidMessage(newHashtags); // создаем массив сообщений об ошибках в каждом хештеге
 
   if (errors.length !== 0) { // если ошибки в написании есть
     textHashtags.setCustomValidity(errors.join(' \n')); // задать полю сообщения об ошибках
