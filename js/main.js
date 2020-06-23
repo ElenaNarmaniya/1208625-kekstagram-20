@@ -36,8 +36,9 @@ var bodyModalOpen = document.querySelector('body');
 var picturesSection = document.querySelector('.pictures'); // Контейнер для изображений от других пользователей - <section class="pictures  container">
 var imgUpload = document.querySelector('.img-upload'); // Поле для загрузки нового изображения на сайт
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); // содержимое шаблона
-var renderPicture = function (picture) {
+var renderPicture = function (picture, index) {
   var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
+  pictureElement.dataset.index = index;
   pictureElement.querySelector('.picture__img').src = picture.url; // вставляем в элемент шаблона фото
   pictureElement.querySelector('.picture__img').alt = picture.description; // вставляем в элемент шаблона описание
   pictureElement.querySelector('.picture__comments').textContent = picture.comments.length; // вставляем в элемент шаблона лайки
@@ -46,107 +47,84 @@ var renderPicture = function (picture) {
 };
 var fragment = document.createDocumentFragment();
 for (var g = 0; g < photos.length; g++) {
-  fragment.appendChild(renderPicture(photos[g]));
+  fragment.appendChild(renderPicture(photos[g], g));
 } // заполняем фрагмент данными из массива photos
 picturesSection.insertBefore(fragment, imgUpload); // вставляем
 
 // показываем фото в полном размере и выводим описание, количество лайков, комментарии
 var sectionBigPicture = document.querySelector('.big-picture'); // нашли секцию, в которой будет показ. фото
-var pictureImg = picturesSection.querySelectorAll('.picture__img'); // фото случайного пользователя
+// var pictureImg = picturesSection.querySelectorAll('.picture__img'); // фото случайного пользователя
 var bigPictureImg = sectionBigPicture.querySelector('.big-picture__img'); // находим div с фото, которое должно стать полноразмерным
 var bigPictureSocial = sectionBigPicture.querySelector('.big-picture__social'); // находим div с Информациtq об изображении: Подпись, комментарии, количество лайков
 var socialComments = sectionBigPicture.querySelector('.social__comments'); // список с коммент. к полноэкранному изображению
-var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
+// var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
 var buttonClosePhoto = sectionBigPicture.querySelector('#picture-cancel'); // кнопка - закрыть окно полноэкранного просмотра изображения
 
-var createComments = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
-  var newComment = socialComment.cloneNode(true);
+var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
+  var newComment = document.querySelector('#comment').content.querySelector('.social__comment').cloneNode(true);
   newComment.querySelector('img').src = commentnew.avatar;
   newComment.querySelector('img').alt = commentnew.name;
   newComment.querySelector('.social__text').textContent = commentnew.message;
   return newComment;
 };
 
-var createFragmentComments = function (commentnew) { // создаем фрагмент из  дополнит. коммент., к 2 имеющимся
+var createFragmentComments = function (comments) { // создаем фрагмент из  дополнит. коммент., к 2 имеющимся
   var part = document.createDocumentFragment();
-  for (var b = 0; b < commentnew.length; b++) {
-    var newComments = createComments(commentnew[i]);
+  for (var b = 0; b < comments.length; b++) {
+    var newComments = createComment(comments[b]);
     part.appendChild(newComments);
   }
   return part;
 };
 
-var addComments = function (commentsList, commentary) { // добавляем фрагмент в список комментариев
+var addComments = function (commentsList, commentFragment) { // добавляем фрагмент в список комментариев
   commentsList.innerHTML = '';
-  commentsList.appendChild(commentary);
+  commentsList.appendChild(commentFragment);
 };
 
-var showBigPhoto = function (photo) { // !!!!!!!!!!!!!не выполняется!!!!!!!!!!!!!
-  sectionBigPicture.classList.remove('hidden'); // удаление класса hidden секции показа фото
+var showBigPhoto = function (photo) {
   var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
   bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
   bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
   bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
   bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
-  // работа с массивом комментрариев
-  // for (var k = 0; k < photo.comments.length; k++) { // заполнение каждого li-комментария данными из массива комментариев к 1 фото
-    // socialComment[k].querySelector('img').alt = photo.comments[k].name;
-    // socialComment[k].querySelector('img').src = photo.comments[k].avatar;
-    // socialComment[k].querySelector('.social__text').textContent = photo.comments[k].message;
-  // }
   addComments(socialComments, comments); // добавить комментарии в список коммент. к полноэкр. изобр.
   sectionBigPicture.querySelector('.social__comment-count').classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
   sectionBigPicture.querySelector('.comments-loader').classList.add('hidden');
-  bodyModalOpen.classList.add('modal-open'); // добавляем на <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле
 };
-// showBigPhoto(photos[0]); // прячем для работы с 3 заданием
 
-var closePhoto = function () { // функция закрытия фото
+var closePhoto = function () {
   sectionBigPicture.classList.add('hidden');
   bodyModalOpen.classList.remove('modal-open');
-};
-
-var closePhotoClick = function () { // функция закрытия фото по клику на крестик
-  closePhoto();
-  buttonClosePhoto.removeEventListener('click', closePhotoClick);
 };
 
 var closePhotoEscape = function (evt) { // функция закрытия фото по нажатию на escape
   if (evt.keyCode === 27) {
     closePhoto();
-    document.removeEventListener('keydown', closePhotoEscape);
   }
 };
 
-var showOnePhoto = function (number) {
+buttonClosePhoto.addEventListener('click', closePhoto);
+document.addEventListener('keydown', closePhotoEscape);
+
+var showOnePhoto = function (evt) { // показываем любую фотографию из 25
   sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
   bodyModalOpen.classList.add('modal-open'); // задаем класс Body
-  showBigPhoto(photos[number]); // показываем одно фото из массива с 25 фото
-};
-
-var showEveryPhoto = function () { // показываем любую фотографию из 25
-  for (var d = 0; d <= pictureImg.length; d++) {
-    showOnePhoto(d);
+  var picture = evt.target.closest('.picture');
+  if (picture) {
+    var index = picture.dataset.index;
+    showBigPhoto(photos[index]);
   }
-  closePhotoClick.addEventListener('click', closePhotoClick); // закрытие по крестику
-  document.addEventListener('keydown', closePhotoEscape); // закрытие по escape
 };
 
-var showEveryPhotoEnter = function (evt) { // показ любой фотографии по нажатию на Enter
+var showOnePhotoEnter = function (evt) { // показ любой фотографии по нажатию на Enter
   if (evt.keyCode === 13) {
-    var currentPicture = evt.target.querySelector('.picture__img');
-    for (var f = 0; f < pictureImg.length; f++) {
-      if (currentPicture === pictureImg[f]) {
-        showOnePhoto(f);
-      }
-    }
-    closePhotoClick.addEventListener('click', closePhotoClick);
-    document.addEventListener('keydown', closePhotoEscape);
+    showOnePhoto(evt);
   }
 };
-//////////!!!!!!!!!!!!!!!!!вот тут полная белиберда!!!!!!!!!!!!!!!!
-picturesSection.addEventListener('click', showEveryPhoto); // показ любого фото по клику на него
-picturesSection.addEventListener('keydown', showEveryPhotoEnter); // показ любого фото по Enter
+
+picturesSection.addEventListener('click', showOnePhoto); // показ любого фото по клику на него
+picturesSection.addEventListener('keydown', showOnePhotoEnter); // показ любого фото по Enter
 
 
 // 3 задание к 4 лекции
