@@ -83,6 +83,8 @@ var addComments = function (commentsList, commentFragment) { // добавляе
 };
 
 var showBigPhoto = function (photo) {
+  sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
+  bodyModalOpen.classList.add('modal-open'); // задаем класс Body
   var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
   bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
   bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
@@ -108,8 +110,6 @@ buttonClosePhoto.addEventListener('click', closePhoto);
 document.addEventListener('keydown', closePhotoEscape);
 
 var showOnePhoto = function (evt) { // показываем любую фотографию из 25
-  sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
-  bodyModalOpen.classList.add('modal-open'); // задаем класс Body
   var picture = evt.target.closest('.picture');
   if (picture) {
     var index = picture.dataset.index;
@@ -128,7 +128,7 @@ picturesSection.addEventListener('keydown', showOnePhotoEnter); // показ л
 
 
 // 3 задание к 4 лекции
-
+// показ формы редактирования фото
 var imgUploadForm = document.querySelector('.img-upload__form'); // большая форма загрузки и редактирования фото на 33 строке
 var uploadFileButton = document.querySelector('#upload-file'); // поле для загрузки изображения с кнопкой Загрузить 37 строка
 var uploadCancelButton = imgUploadForm.querySelector('#upload-cancel'); // кнопка закрытия формы редакт. 68 строка
@@ -375,9 +375,11 @@ var createHashtagsKeyup = function () { // функция по обработк�
 
   if (errors.length !== 0) { // если ошибки в написании есть
     textHashtags.setCustomValidity(errors.join(' \n')); // задать полю сообщения об ошибках
+    textHashtags.style.border = '2px solid red'; // красная рамка поля при неверном вводе
   } else {
     textHashtags.setCustomValidity(''); // иначе - в сообщениях об ошибках будет пустая строка
+    textHashtags.style.border = '';
   }
 };
 
-textHashtags.addEventListener('keyup', createHashtagsKeyup); // добавляем на инпут обработчик события после ввода хештегов и их обработке на валидность
+textHashtags.addEventListener('keyup', createHashtagsKeyup); // добавляем на инпут обработчик события после ввода хештегов и их обработки на валидность
