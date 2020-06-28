@@ -4,6 +4,7 @@
 (function () {
   var SCALE_VALUE = '100%'; // размер фото = 100%
   var SCALE_IMAGE_VALUE = 100; // переменная для масштабирования фото
+  var effectLevel = window.pin.effectLevel;
   var bodyModalOpen = window.util.bodyModalOpen;
   var imgUploadForm = window.util.imgUploadForm; // большая форма загрузки и редактирования фото на 33 строке
   var uploadFileButton = document.querySelector('#upload-file'); // поле для загрузки изображения с кнопкой Загрузить 37 строка
@@ -25,6 +26,7 @@
     scaleValue(SCALE_VALUE); // загруженному фото подставить размер 100%
     scaleImage(SCALE_IMAGE_VALUE); // масштабирование фото 1:1
     removeClassHidden(); // показ поля изменения масштаба
+    effectLevel.classList.add('hidden'); // при появлении формы скрыть ползунок, т.к. эффект - оригинал
     removeEffect(); // сброс с фото всех эффектов effects__preview--
     uploadCancelButton.addEventListener('click', closeFormCross); // реагирование на кнопку Закрыть
     document.addEventListener('keydown', closeFormKeyCode); // реагирование на Escape

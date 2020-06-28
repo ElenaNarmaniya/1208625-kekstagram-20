@@ -25,7 +25,7 @@
     removeEffect(); // удаление предыдущих эффектов
     showEffectLevel(); // показ поля с ползунком
     imgUploadPreview.classList.add(style); // добавление стиля загруженному фото
-    window.pin.deleteEffect(style); // возврат ползунка на значение по умолчанию
+    window.pin.deleteEffect(); // возврат ползунка на значение по умолчанию при смене эффектов
   };
 
   var removeClassHidden = function () { // удаление класса hidden  с поля fieldset с ползунком. нужно при переключении эффектов на фото
@@ -66,6 +66,6 @@
 
   window.effects = {
     removeEffect: removeEffect,
-    removeClassHidden: removeClassHidden
+    removeClassHidden: removeClassHidden,
   };
 })();

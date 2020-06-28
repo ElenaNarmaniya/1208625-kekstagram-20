@@ -51,10 +51,11 @@
     document.addEventListener('mouseup', deletePinMouse); // при отпускании мыши - удалить обработчики событий
   });
 
-  var deleteEffect = function (style) { // возврат ползунка на значение по умолчанию
+  var deleteEffect = function () { // возврат ползунка на значение по умолчанию при смене эффектов для фото
     effectLevelValue.value = 20; // числовое значение ползунка из разметки
     effectLevelDepth.style.width = 20 + '%';
-    imgUploadOverlay.querySelector(style).style.filter = '';
+    effectLevelPin.style.left = 20 + '%';
+    imgUploadOverlay.querySelector('img').style.filter = '';
   };
 
   window.pin = {
