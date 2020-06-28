@@ -65,7 +65,7 @@
     var picture = evt.target.closest('.picture');
     if (picture) {
       var index = picture.dataset.index;
-      showBigPhoto(photos[index]);
+      showBigPhoto(window.createPhotos.photos[index]);
     }
   };
 

@@ -63,10 +63,6 @@
     photoEffects[v].addEventListener('click', getEffectPreview);
   }
 
-  for (var z = 0; z < photoEffects.length; z++) { // удаление эффекта по клику
-    photoEffects[v].removeEventListener('click', getEffectPreview);
-  }
-
   window.effects = {
     removeEffect: removeEffect,
     removeClassHidden: removeClassHidden

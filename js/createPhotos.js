@@ -58,6 +58,7 @@
   picturesSection.insertBefore(fragment, imgUpload); // вставляем
 
   window.createPhotos = {
-    picturesSection: picturesSection
+    picturesSection: picturesSection,
+    photos: photos
   };
 })();

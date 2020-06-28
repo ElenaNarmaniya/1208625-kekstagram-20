@@ -327,10 +327,6 @@ for (var v = 0; v < photoEffects.length; v++) { // добавление эффе
   photoEffects[v].addEventListener('click', getEffectPreview);
 }
 
-for (var z = 0; z < photoEffects.length; z++) { // удаление эффекта по клику
-  photoEffects[v].removeEventListener('click', getEffectPreview);
-}
-
 // Валидация хештегов
 
 var MAX_HASHTAGS_AMOUNT = 5; // нельзя указать больше пяти хэш-тегов;
