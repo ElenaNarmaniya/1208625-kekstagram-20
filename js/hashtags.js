@@ -7,24 +7,26 @@
   var HASHTAG_PATTERN = /^([#]{1})([0-9a-zа-яё]{1,19})$/g; // пример хештега
   var textHashtags = window.showForm.textHashtags; // инпут для хештегов 121 строка
 
-  var getNewHashtags = function (inputString) { // функция для получения массива из строки-хештега
-    var hashtags = inputString.split(' '); // разбиваем строку-хештег на массив split по пробелу
-    return hashtags;
+  // функция для получения массива из строки-хештега
+  var getNewHashtags = function (inputString) {
+    return inputString.split(' '); // разбиваем строку-хештег на массив split по пробелу
   };
 
-  var pushMessageError = function (message, errMessages) { // функция для получения сообщения об ошибке
+  // функция для получения сообщения об ошибке
+  var pushMessageError = function (message, errMessages) {
     if (errMessages.indexOf(message) === -1) {
       errMessages.push(message);
     }
     return errMessages;
   };
 
-  var createValidMessage = function (notEmptyHashtags) { // функция проверки валидности хештегов и создание массива из сообщений
+  // функция проверки валидности хештегов и создание массива из сообщений
+  var createValidMessage = function (notEmptyHashtags) {
     var valMessages = [];
     if (notEmptyHashtags.length > MAX_HASHTAGS_AMOUNT) {
-      pushMessageError('Хеш-тегов не должно быть больше ' + MAX_HASHTAGS_AMOUNT + ' .', valMessages); // вызов функции с сообщением об ошибке
+      pushMessageError('Хеш-тегов не должно быть больше ' + MAX_HASHTAGS_AMOUNT + ' .', valMessages);
     }
-    for (var j = 0; j < notEmptyHashtags.length; j++) { // проходим циклом по массиву из хештегов
+    for (var j = 0; j < notEmptyHashtags.length; j++) {
       var hashtag = notEmptyHashtags[j];
       if (!hashtag.startsWith('#')) {
         pushMessageError('Хеш-тег должен начинаться с символа решетки (#).', valMessages);
@@ -41,7 +43,8 @@
     return valMessages;
   };
 
-  var createHashtagsKeyup = function () { // функция по обработке хештегов, введенных пользователем в инпут
+  // функция по обработке хештегов, введенных пользователем в инпут
+  var createHashtagsKeyup = function () {
     var inputValue = textHashtags.value.toLowerCase(); // берем значение из инпута ввода хештегов заглавными буквамии
     var newHashtags = getNewHashtags(inputValue); // создаем массив из хештега
     var errors = createValidMessage(newHashtags); // создаем массив сообщений об ошибках в каждом хештеге
@@ -50,10 +53,11 @@
       textHashtags.setCustomValidity(errors.join(' \n')); // задать полю сообщения об ошибках
       textHashtags.style.border = '2px solid red'; // красная рамка поля при неверном вводе
     } else {
-      textHashtags.setCustomValidity(''); // иначе - в сообщениях об ошибках будет пустая строка
+      textHashtags.setCustomValidity('');
       textHashtags.style.border = '';
     }
   };
 
-  textHashtags.addEventListener('keyup', createHashtagsKeyup); // добавляем на инпут обработчик события после ввода хештегов и их обработки на валидность
+  // добавляем на инпут обработчик события после ввода хештегов и их обработки на валидность
+  textHashtags.addEventListener('keyup', createHashtagsKeyup);
 })();

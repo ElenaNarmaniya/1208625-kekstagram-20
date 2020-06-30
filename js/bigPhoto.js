@@ -2,14 +2,11 @@
 
 (function () {
   var picturesSection = window.createPhotos.picturesSection; // Контейнер для изображений от других пользователей - <section class="pictures  container">
-  var bodyModalOpen = window.util.bodyModalOpen; // доступ к  body
-  // показываем фото в полном размере и выводим описание, количество лайков, комментарии
+  var bodyModalOpen = document.querySelector('body');
   var sectionBigPicture = document.querySelector('.big-picture'); // нашли секцию, в которой будет показ. фото
-  // var pictureImg = picturesSection.querySelectorAll('.picture__img'); // фото случайного пользователя
   var bigPictureImg = sectionBigPicture.querySelector('.big-picture__img'); // находим div с фото, которое должно стать полноразмерным
   var bigPictureSocial = sectionBigPicture.querySelector('.big-picture__social'); // находим div с Информациtq об изображении: Подпись, комментарии, количество лайков
   var socialComments = sectionBigPicture.querySelector('.social__comments'); // список с коммент. к полноэкранному изображению
-  // var socialComment = sectionBigPicture.querySelectorAll('.social__comment'); // li-Комментарий к изображению
   var buttonClosePhoto = sectionBigPicture.querySelector('#picture-cancel'); // кнопка - закрыть окно полноэкранного просмотра изображения
 
   var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
@@ -58,9 +55,6 @@
     }
   };
 
-  buttonClosePhoto.addEventListener('click', closePhoto);
-  document.addEventListener('keydown', closePhotoEscape);
-
   var showOnePhoto = function (evt) { // показываем любую фотографию из 25
     var picture = evt.target.closest('.picture');
     if (picture) {
@@ -75,6 +69,8 @@
     }
   };
 
+  buttonClosePhoto.addEventListener('click', closePhoto);
+  document.addEventListener('keydown', closePhotoEscape);
   picturesSection.addEventListener('click', showOnePhoto); // показ любого фото по клику на него
   picturesSection.addEventListener('keydown', showOnePhotoEnter); // показ любого фото по Enter
 })();

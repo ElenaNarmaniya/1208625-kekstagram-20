@@ -3,20 +3,30 @@
 // работа с ползунком
 (function () {
   var imgUploadPreview = window.scale.imgUploadPreview;
-  var imgUploadOverlay = window.util.imgUploadOverlay;
+  var imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level'); // поле fieldset с ползунком
   var effectLevelPin = effectLevel.querySelector('.effect-level__pin'); // кнопка-ползунок
   var effectLevelLine = effectLevel.querySelector('.effect-level__line'); // линия, по которой перемещается ползунок
   var effectLevelDepth = effectLevel.querySelector('.effect-level__depth'); // глубина эффекта - насыщенный цвет линии
   var effectLevelValue = effectLevel.querySelector('.effect-level__value'); // числовое значение эффекта
 
-  effectLevelPin.addEventListener('mousedown', function (evt) { // обработчик события при нажатии на ползунок
+  // возврат ползунка на значение по умолчанию при смене эффектов для фото
+  var deleteEffect = function () {
+    effectLevelValue.value = 20; // числовое значение ползунка из разметки
+    effectLevelDepth.style.width = 20 + '%';
+    effectLevelPin.style.left = 20 + '%';
+    imgUploadOverlay.querySelector('img').style.filter = '';
+  };
+
+  // обработчик события при нажатии на ползунок
+  effectLevelPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var lineWidth = effectLevelLine.offsetWidth; // ширина линии, по которой перемещается ползунок
     var startCoords = evt.clientX; // начальная горизонтальная координата=0
 
-    var movePinMouse = function (moveEvt) { // функция для определения положения ползунка
+    // функция для определения положения ползунка
+    var movePinMouse = function (moveEvt) {
       moveEvt.preventDefault();
 
       var coords = startCoords - moveEvt.clientX; // startCoords=0 - знач. горизонт. коорд. ползунка при его движении
@@ -41,7 +51,8 @@
       }
     };
 
-    var deletePinMouse = function (upEvt) { // функция при отпускании клавиши мыши - удалить обработчики
+    // функция при отпускании клавиши мыши - удалить обработчики
+    var deletePinMouse = function (upEvt) {
       upEvt.preventDefault();
       document.removeEventListener('mousemove', movePinMouse);
       document.removeEventListener('mouseup', deletePinMouse);
@@ -50,13 +61,6 @@
     document.addEventListener('mousemove', movePinMouse); // при нажатии на кнопку мыши зафиксировать координату ползунка
     document.addEventListener('mouseup', deletePinMouse); // при отпускании мыши - удалить обработчики событий
   });
-
-  var deleteEffect = function () { // возврат ползунка на значение по умолчанию при смене эффектов для фото
-    effectLevelValue.value = 20; // числовое значение ползунка из разметки
-    effectLevelDepth.style.width = 20 + '%';
-    effectLevelPin.style.left = 20 + '%';
-    imgUploadOverlay.querySelector('img').style.filter = '';
-  };
 
   window.pin = {
     effectLevel: effectLevel,

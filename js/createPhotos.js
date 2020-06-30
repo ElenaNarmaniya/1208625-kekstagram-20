@@ -12,20 +12,22 @@
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); // содержимое шаблона
   var fragment = document.createDocumentFragment(); // создание фрагмента
 
-  var createRandom = function (min, max) {
   // случайное число от min до (max+1)
+  var createRandom = function (min, max) {
     var rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   };
 
+  // функция создания 1 объект-комментарий
   var generateComment = function () {
     var comment = {};
     comment.avatar = 'img/avatar-' + createRandom(1, 6) + '.svg';
     comment.message = photosComments[createRandom(0, photosComments.length - 1)];
     comment.name = authorComments[createRandom(0, authorComments.length - 1)];
     return comment;
-  }; // функция создания 1 объект-комментарий
+  };
 
+  // функция для создания 1 фото с описанием и комментариями
   var generatePhoto = function () {
     var object = {};
     object.url = 'photos/' + createRandom(1, 25) + '.jpg';
@@ -36,12 +38,13 @@
       object.comments.push(generateComment());
     }
     return object;
-  }; // функция для создания 1 фото с описанием и комментариями
+  };
 
   for (var i = 0; i < PHOTOS_NUMBER; i++) {
     photos.push(generatePhoto());
   }
-  // console.log(photos);
+
+  // заполняем фрагмент данными из массива photos
   var renderPicture = function (picture, index) {
     var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
     pictureElement.dataset.index = index;
@@ -54,8 +57,8 @@
 
   for (var g = 0; g < photos.length; g++) {
     fragment.appendChild(renderPicture(photos[g], g));
-  } // заполняем фрагмент данными из массива photos
-  picturesSection.insertBefore(fragment, imgUpload); // вставляем
+  }
+  picturesSection.insertBefore(fragment, imgUpload);
 
   window.createPhotos = {
     picturesSection: picturesSection,
