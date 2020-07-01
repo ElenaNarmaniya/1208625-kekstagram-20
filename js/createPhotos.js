@@ -40,9 +40,9 @@
     return object;
   };
 
-  for (var i = 0; i < PHOTOS_NUMBER; i++) {
-    photos.push(generatePhoto());
-  }
+  //for (var i = 0; i < PHOTOS_NUMBER; i++) {
+    //photos.push(generatePhoto());
+  //}
 
   // заполняем фрагмент данными из массива photos
   var renderPicture = function (picture, index) {
@@ -55,9 +55,12 @@
     return pictureElement;
   };
 
-  for (var g = 0; g < photos.length; g++) {
-    fragment.appendChild(renderPicture(photos[g], g));
-  }
+  window.loadData(function (newPhotos) {
+    for (var g = 0; g < newPhotos.length; g++) {
+      fragment.appendChild(renderPicture(newPhotos[g], g));
+    }
+  });
+
   picturesSection.insertBefore(fragment, imgUpload);
 
   window.createPhotos = {
