@@ -6,6 +6,9 @@
   var imgUpload = document.querySelector('.img-upload'); // Поле для загрузки нового изображения на сайт
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); // содержимое шаблона
   var fragment = document.createDocumentFragment(); // создание фрагмента
+  var socialCommentCount = document.querySelector('.social__comment-count'); // div - Комментарии к изображению
+  var commentsLoader = document.querySelector('.comments-loader'); // Кнопка для загрузки новой порции комментариев
+  var imageFiltres = document.querySelector('.img-filters'); // section - Фильтрация изображений от других пользователей
 
   // заполняем фрагмент данными из массива photos
   var renderPicture = function (picture, index) {
@@ -18,13 +21,25 @@
     return pictureElement;
   };
 
+  var clearPicture = function () {
+    picturesSection.querySelectorAll('.picture').forEach(function (picture) {
+      picture.remove();
+    });
+  };
+
   // принимаем данные с сервера, добавляем в массив фото, вставляем в разметку
-  window.loadData(function (newPhotos) {
-    for (var g = 0; g < newPhotos.length; g++) {
-      fragment.appendChild(renderPicture(newPhotos[g], g));
-      photos.push(newPhotos[g]);
-    }
-    picturesSection.insertBefore(fragment, imgUpload);
+  window.addEventListener('load', function () {
+    window.loadData.upload(function (newPhotos) {
+      clearPicture();
+      for (var g = 0; g < newPhotos.length; g++) {
+        fragment.appendChild(renderPicture(newPhotos[g], g));
+        photos.push(newPhotos[g]);
+      }
+      picturesSection.insertBefore(fragment, imgUpload);
+    });
+    socialCommentCount.classList.add('hidden');
+    commentsLoader.classList.add('hidden');
+    imageFiltres.classList.remove('img-filters--inactive');
   });
 
   window.createPhotos = {
