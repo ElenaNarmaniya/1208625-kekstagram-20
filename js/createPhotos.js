@@ -44,6 +44,8 @@
 
   window.createPhotos = {
     picturesSection: picturesSection,
-    photos: photos
+    photos: photos,
+    renderPicture: renderPicture,
+    clearPicture: clearPicture
   };
 })();

@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var COMMENTS_NUMBER = 5; // количество комментариев при показе = 5
   var picturesSection = window.createPhotos.picturesSection; // Контейнер для изображений от других пользователей - <section class="pictures  container">
   var bodyModalOpen = document.querySelector('body');
   var sectionBigPicture = document.querySelector('.big-picture'); // нашли секцию, в которой будет показ. фото
