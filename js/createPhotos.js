@@ -42,10 +42,9 @@
     imageFiltres.classList.remove('img-filters--inactive');
   });
 
-  window.createPhotos = {
+  window. = {
     picturesSection: picturesSection,
     photos: photos,
     renderPicture: renderPicture,
-    clearPicture: clearPicture
   };
 })();

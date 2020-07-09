@@ -9,6 +9,8 @@
   var bigPictureSocial = sectionBigPicture.querySelector('.big-picture__social'); // находим div с Информациtq об изображении: Подпись, комментарии, количество лайков
   var socialComments = sectionBigPicture.querySelector('.social__comments'); // список с коммент. к полноэкранному изображению
   var buttonClosePhoto = sectionBigPicture.querySelector('#picture-cancel'); // кнопка - закрыть окно полноэкранного просмотра изображения
+  var commentsLoader = document.querySelector('.comments-loader');
+  var socialCommentCount = document.querySelector('.social__comment-count'); // div - Комментарии к изображению
 
   var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
     var newComment = document.querySelector('#comment').content.querySelector('.social__comment').cloneNode(true);
@@ -36,13 +38,22 @@
     sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
     bodyModalOpen.classList.add('modal-open'); // задаем класс Body
     var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
+
+    var count = 0; // счетчик
+    // пронумеруем комментарии
+    var numberComments = function (actualCount, summaryCount) {
+      if (actualCount > summaryCount) {
+        actualCount = summaryCount;
+      }
+      var textCountComments = actualCount + ' из ' + summaryCount + ' комментариев';
+      socialCommentCount.textContent = textCountComments;
+    };
+
     bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
     bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
     bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
     bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
     addComments(socialComments, comments); // добавить комментарии в список коммент. к полноэкр. изобр.
-    sectionBigPicture.querySelector('.social__comment-count').classList.add('hidden'); // прячем блоки счётчика комментариев и загрузки новых комментариев у любой фотографии
-    sectionBigPicture.querySelector('.comments-loader').classList.add('hidden');
   };
 
   var closePhoto = function () {

@@ -2,7 +2,14 @@
 // устранение дребезга при переключении фильтра списка элементов
 (function () {
   var DEBOUNCE = 500;
-  var TOTAL_PHOTOS = 10; // максимальное количество в категории случайные
+  var TOTAL_PHOTOS = 10; // максимальное количество фото в категории случайные
+  var picturesSection = document.querySelector('.pictures');
+
+  var clearPicture = function () {
+    picturesSection.querySelectorAll('.picture').forEach(function (picture) {
+      picture.remove();
+    });
+  };
 
   var getRandomArray = function (array) {
     return shuffle(array).slice(0, TOTAL_PHOTOS);
@@ -32,25 +39,25 @@
       }, DEBOUNCE);
     };
   };
-
+  // делаем сортировку фото
   var createPhotosFilter = function (filter) {
-    var photos = photos.slice();
+    var photosFilter = window.createPhotos.photos.slice();
     switch (filter) {
-      case 'filter-random':
-        photos = getRandomArray(photos);
+      case 'filter-random': // случайные
+        photosFilter = getRandomArray(photosFilter);
         break;
-      case 'filter-discussed':
-        photos.sort(function (a, b) {
+      case 'filter-discussed': // обсуждаемые
+        photosFilter.sort(function (a, b) {
           return b.comments.length - a.comments.length;
         });
         break;
       default: break;
     }
-    getPhoto(photos);
+    getPhoto(photosFilter);
   };
 
   var  getPhoto = function (array) {
-    window.createPhotos.clearPictures();
+    clearPicture();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < array.length; i++) {
       fragment.appendChild(window.createPhotos.renderPicture(array[i], i));
