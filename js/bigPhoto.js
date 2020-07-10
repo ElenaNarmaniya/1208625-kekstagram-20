@@ -12,7 +12,7 @@
   var commentsLoader = document.querySelector('.comments-loader');
   var socialCommentCount = document.querySelector('.social__comment-count'); // div - Комментарии к изображению
 
-  var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
+  var createComment = function (commentnew, template) { // создаем допол. коммент в разметку, кроме 2 имеющихся
     var newComment = document.querySelector('#comment').content.querySelector('.social__comment').cloneNode(true);
     newComment.querySelector('img').src = commentnew.avatar;
     newComment.querySelector('img').alt = commentnew.name;
@@ -37,8 +37,9 @@
   var showBigPhoto = function (photo) {
     sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
     bodyModalOpen.classList.add('modal-open'); // задаем класс Body
-    var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
-
+    //var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
+    
+    var socialComment = sectionBigPicture.querySelector('.social__comment');
     var count = 0; // счетчик
     // пронумеруем комментарии
     var numberComments = function (actualCount, summaryCount) {
@@ -53,6 +54,28 @@
     bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
     bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
     bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
+    
+    var drewComments = function () {
+      var number = COMMENTS_NUMBER * count++;
+      var countComments = number + COMMENTS_NUMBER;
+      var comments = photo.comments.slice(number, countComments);
+      var commentsFragment = document.createDocumentFragment();
+      for (var i = 0; i < comments.length; i++) {
+          commentsFragment.appendChild(createComment(photo.comments[i], socialComment));
+      }
+      socialComments.appendChild(commentsFragment);
+      if ((countComments) >= photo.comments.length) {
+          commentsLoader.classList.add('hidden');
+      }
+      numberComments(countComments, photo.comments.length);
+    };
+    commentsLoader.addEventListener('click', numberComments);
+    if (photo.comments.length > 0) {
+      socialComments.innerHTML = '';
+    }
+    commentsLoader.classList.remove('hidden');
+
+
     addComments(socialComments, comments); // добавить комментарии в список коммент. к полноэкр. изобр.
   };
 
