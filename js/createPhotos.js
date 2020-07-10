@@ -42,7 +42,7 @@
     imageFiltres.classList.remove('img-filters--inactive');
   });
 
-  window. = {
+  window.createPhotos = {
     picturesSection: picturesSection,
     photos: photos,
     renderPicture: renderPicture,
