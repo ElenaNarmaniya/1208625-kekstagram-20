@@ -44,7 +44,7 @@
     };
   };
 
-  var  getPhoto = function (array) {
+  var getPhoto = function (array) {
     clearPicture();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < array.length; i++) {
@@ -90,5 +90,4 @@
     }
     eliminateDebounce(evt.target.id);
   });
-
 })();

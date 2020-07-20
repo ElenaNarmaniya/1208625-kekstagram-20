@@ -12,26 +12,12 @@
   var commentsLoader = document.querySelector('.comments-loader');
   var socialCommentCount = document.querySelector('.social__comment-count'); // div - Комментарии к изображению
 
-  var createComment = function (commentnew, template) { // создаем допол. коммент в разметку, кроме 2 имеющихся
+  var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
     var newComment = document.querySelector('#comment').content.querySelector('.social__comment').cloneNode(true);
     newComment.querySelector('img').src = commentnew.avatar;
     newComment.querySelector('img').alt = commentnew.name;
     newComment.querySelector('.social__text').textContent = commentnew.message;
     return newComment;
-  };
-
-  var createFragmentComments = function (comments) { // создаем фрагмент из  дополнит. коммент., к 2 имеющимся
-    var part = document.createDocumentFragment();
-    for (var b = 0; b < comments.length; b++) {
-      var newComments = createComment(comments[b]);
-      part.appendChild(newComments);
-    }
-    return part;
-  };
-
-  var addComments = function (commentsList, commentFragment) { // добавляем фрагмент в список комментариев
-    commentsList.innerHTML = '';
-    commentsList.appendChild(commentFragment);
   };
 
   var showBigPhoto = function (photo) {
@@ -60,7 +46,7 @@
       var comments = photo.comments.slice(number, countComments);
       var commentsFragment = document.createDocumentFragment();
       for (var i = 0; i < comments.length; i++) {
-          commentsFragment.appendChild(createComment(photo.comments[i], socialComment));
+        commentsFragment.appendChild(createComment(photo.comments[i], socialComment));
       }
       socialComments.appendChild(commentsFragment);
       if ((countComments) >= photo.comments.length) {

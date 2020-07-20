@@ -5,7 +5,6 @@
   var SCALE_VALUE = '100%'; // размер фото = 100%
   var SCALE_IMAGE_VALUE = 100; // переменная для масштабирования фото
   var effectLevel = window.pin.effectLevel;
-  var bodyModalOpen = document.querySelector('body');
   var imgUploadForm = document.querySelector('.img-upload__form'); // большая форма загрузки и редактирования фото на 33 строке
   var uploadFileButton = document.querySelector('#upload-file'); // поле для загрузки изображения с кнопкой Загрузить 37 строка
   var uploadCancelButton = imgUploadForm.querySelector('#upload-cancel'); // кнопка закрытия формы редакт. 68 строка
@@ -23,12 +22,12 @@
   };
 
   var openPopup = function () {
-    formEditImage.classList.remove('hidden');
+    imgUploadOverlay.classList.remove('hidden');
     document.body.classList.add('modal-open');
   };
 
   var closePopup = function () {
-    formEditImage.classList.add('hidden');
+    imgUploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
   };
 
