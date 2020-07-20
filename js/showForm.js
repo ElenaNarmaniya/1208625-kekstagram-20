@@ -15,16 +15,26 @@
   var removeEffect = window.effects.removeEffect;
   var removeClassHidden = window.effects.removeClassHidden;
   var textHashtags = imgUploadForm.querySelector('.text__hashtags'); // инпут для хештегов 121 строка
+  var main = document.querySelector('main');
 
   // функция для подстановки размера фото в % при Изменении размера изображения
   var scaleValue = function (value) {
     document.querySelector('.scale__control--value').value = value; // в инпут поставить указанное значение размера фото в %
   };
 
+  var openPopup = function () {
+    formEditImage.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+  };
+
+  var closePopup = function () {
+    formEditImage.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+  };
+
   // функция для показа поля редактирования изображения
   var showForm = function () {
-    imgUploadOverlay.classList.remove('hidden'); // показать Форму редактирования изображения
-    bodyModalOpen.classList.add('modal-open'); // добавление класса к body
+    openPopup();
     scaleValue(SCALE_VALUE); // загруженному фото подставить размер 100%
     scaleImage(SCALE_IMAGE_VALUE); // масштабирование фото 1:1
     removeClassHidden(); // показ поля изменения масштаба
@@ -36,8 +46,7 @@
 
   // реализация закрытия поля для редактирования фото по нажатию на кнопку
   var closeFormCross = function () {
-    imgUploadOverlay.classList.add('hidden'); // добавляем класс hidden полю для редакт. фото
-    bodyModalOpen.classList.remove('modal-open'); // удалили класс modal-open с body
+    closePopup();
     imgUploadForm.reset(); // восстанавливаем стандартные значения всем элементам большой формы загрузки и редактирования фото
     uploadCancelButton.removeEventListener('click', closeFormCross); // по клику на кнопку закрытия формы скрываем форму
   };
@@ -51,6 +60,70 @@
 
   // отлов изменений на поле Загрузить
   uploadFileButton.addEventListener('change', showForm);
+
+  // сообщение об удачной отправке формы
+  var successSubmitMessage = function () {
+    var success = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+    main.appendChild(success);
+
+    var closeSuccess = function () {
+      success.remove();
+      document.removeEventListener('keydown', successEscape);
+    };
+
+    var successButtonClick = function () {
+      closeSuccess();
+    };
+
+    var successEscape = function (evt) {
+      if (evt.key === 27) {
+        closeSuccess();
+      }
+    };
+
+    success.addEventListener('click', successButtonClick);
+    document.addEventListener('keydown', successEscape);
+  };
+
+  var onSuccess = function () {
+    closePopup();
+    imgUploadForm.reset();
+    successSubmitMessage();
+  };
+
+  // сообщение о неудачной отправке формы
+  var onError = function (messageError) {
+    var errorWindow = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+    errorWindow.querySelector('.error__title').textContent = messageError;
+    main.appendChild(errorWindow);
+
+    var closeError = function () {
+      errorWindow.remove();
+      document.removeEventListener('keydown', errorEscape);
+    };
+
+    var errorButtonClick = function () {
+      closeError();
+    };
+
+    var errorEscape = function (evt) {
+      if (evt.key === 27) {
+        closeError();
+      }
+    };
+
+    errorWindow.addEventListener('click', errorButtonClick);
+    document.addEventListener('keydown', errorEscape);
+
+    closePopup();
+    imgUploadForm.reset();
+  };
+
+  // отправка данных
+  imgUploadForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.loadData.post(new FormData(imgUploadForm), onSuccess, onError);
+  });
 
   window.showForm = {
     textHashtags: textHashtags

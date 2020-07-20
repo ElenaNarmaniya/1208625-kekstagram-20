@@ -37,8 +37,7 @@
   var showBigPhoto = function (photo) {
     sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
     bodyModalOpen.classList.add('modal-open'); // задаем класс Body
-    //var comments = createFragmentComments(photo.comments); // применим функцию "вставляем дополнит. коммент. в разметку, к 2 имеющимся
-    
+
     var socialComment = sectionBigPicture.querySelector('.social__comment');
     var count = 0; // счетчик
     // пронумеруем комментарии
@@ -54,8 +53,8 @@
     bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
     bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
     bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
-    
-    var drewComments = function () {
+
+    var insertComments = function () {
       var number = COMMENTS_NUMBER * count++;
       var countComments = number + COMMENTS_NUMBER;
       var comments = photo.comments.slice(number, countComments);
@@ -65,18 +64,18 @@
       }
       socialComments.appendChild(commentsFragment);
       if ((countComments) >= photo.comments.length) {
-          commentsLoader.classList.add('hidden');
+        commentsLoader.classList.add('hidden');
       }
       numberComments(countComments, photo.comments.length);
     };
+    // загрузка дополнит. комментариев
     commentsLoader.addEventListener('click', numberComments);
     if (photo.comments.length > 0) {
       socialComments.innerHTML = '';
     }
     commentsLoader.classList.remove('hidden');
 
-
-    addComments(socialComments, comments); // добавить комментарии в список коммент. к полноэкр. изобр.
+    insertComments();
   };
 
   var closePhoto = function () {
