@@ -11,7 +11,7 @@
   var imageFiltres = document.querySelector('.img-filters'); // section - Фильтрация изображений от других пользователей
 
   // заполняем фрагмент данными из массива photos
-  var renderPicture = function (picture, index) {
+  var renderPicture = function (picture) {
     var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
     pictureElement.dataset.index = picture.id;
     pictureElement.querySelector('.picture__img').src = picture.url; // вставляем в элемент шаблона фото
