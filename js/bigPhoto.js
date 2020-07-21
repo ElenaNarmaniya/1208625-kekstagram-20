@@ -37,7 +37,6 @@
 
     bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
     bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
-    bigPictureSocial.querySelector('.comments-count').textContent = photo.comments.length; // записали кол-во комментариев
     bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
 
     var insertComments = function () {
@@ -79,7 +78,9 @@
     var picture = evt.target.closest('.picture');
     if (picture) {
       var index = picture.dataset.index;
-      showBigPhoto(window.createPhotos.photos[index]);
+      showBigPhoto(window.createPhotos.photos.find(function (p) {
+        return p.id === index;
+      }));
     }
   };
 

@@ -13,7 +13,7 @@
   // заполняем фрагмент данными из массива photos
   var renderPicture = function (picture, index) {
     var pictureElement = pictureTemplate.cloneNode(true); //  клонируем содержимое шаблона
-    pictureElement.dataset.index = index;
+    pictureElement.dataset.index = picture.id;
     pictureElement.querySelector('.picture__img').src = picture.url; // вставляем в элемент шаблона фото
     pictureElement.querySelector('.picture__img').alt = picture.description; // вставляем в элемент шаблона описание
     pictureElement.querySelector('.picture__comments').textContent = picture.comments.length; // вставляем в элемент шаблона лайки
@@ -32,7 +32,8 @@
     window.loadData.upload(function (newPhotos) {
       clearPicture();
       for (var g = 0; g < newPhotos.length; g++) {
-        fragment.appendChild(renderPicture(newPhotos[g], g));
+        newPhotos[g].id = g;
+        fragment.appendChild(renderPicture(newPhotos[g]));
         photos.push(newPhotos[g]);
       }
       picturesSection.insertBefore(fragment, imgUpload);
