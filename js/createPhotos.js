@@ -21,16 +21,10 @@
     return pictureElement;
   };
 
-  var clearPicture = function () {
-    picturesSection.querySelectorAll('.picture').forEach(function (picture) {
-      picture.remove();
-    });
-  };
-
   // принимаем данные с сервера, добавляем в массив фото, вставляем в разметку
   window.addEventListener('load', function () {
     window.loadData.upload(function (newPhotos) {
-      clearPicture();
+      window.filters.clearPicture();
       for (var g = 0; g < newPhotos.length; g++) {
         newPhotos[g].id = g;
         fragment.appendChild(renderPicture(newPhotos[g]));

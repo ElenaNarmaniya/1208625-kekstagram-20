@@ -90,4 +90,8 @@
     }
     eliminateDebounce(evt.target.id);
   });
+
+  window.filters = {
+    clearPicture: clearPicture
+  };
 })();
