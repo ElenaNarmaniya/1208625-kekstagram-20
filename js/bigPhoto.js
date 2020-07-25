@@ -17,11 +17,11 @@
 
   var loadedCommentsCount = 0; // счетчик загруженных комментариев
 
-  var createComment = function (commentnew) { // создаем допол. коммент в разметку, кроме 2 имеющихся
+  var createComment = function (comment) { // создаем допол. коммент в разметку, кроме 2 имеющихся
     var newComment = document.querySelector('#comment').content.querySelector('.social__comment').cloneNode(true);
-    newComment.querySelector('img').src = commentnew.avatar;
-    newComment.querySelector('img').alt = commentnew.name;
-    newComment.querySelector('.social__text').textContent = commentnew.message;
+    newComment.querySelector('img').src = comment.avatar;
+    newComment.querySelector('img').alt = comment.name;
+    newComment.querySelector('.social__text').textContent = comment.message;
     return newComment;
   };
 

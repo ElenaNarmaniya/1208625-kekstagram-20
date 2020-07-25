@@ -12,6 +12,7 @@
     for (var u = 0; u < classes.length; u++) {
       if (classes[u].match('effects__preview--')) { // поиск сопоставления названия эффекта эффект, примененному к фото
         imgUploadPreview.classList.remove(classes[u]); // удаление этого эффекта
+        imgUploadPreview.style.filter = '';
       }
     }
   };

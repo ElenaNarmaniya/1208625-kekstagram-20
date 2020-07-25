@@ -23,6 +23,9 @@
   // функция проверки валидности хештегов и создание массива из сообщений
   var createValidMessage = function (notEmptyHashtags) {
     var valMessages = [];
+    if (!notEmptyHashtags.length) {
+      return valMessages;
+    }
     if (notEmptyHashtags.length > MAX_HASHTAGS_AMOUNT) {
       pushMessageError('Хеш-тегов не должно быть больше ' + MAX_HASHTAGS_AMOUNT + ' .', valMessages);
     }
@@ -52,10 +55,10 @@
     if (errors.length !== 0) { // если ошибки в написании есть
       textHashtags.setCustomValidity(errors.join(' \n')); // задать полю сообщения об ошибках
       textHashtags.style.border = '2px solid red'; // красная рамка поля при неверном вводе
-    } else {
-      textHashtags.setCustomValidity('');
-      textHashtags.style.border = '';
+      return;
     }
+    textHashtags.setCustomValidity('');
+    textHashtags.style.border = '';
   };
 
   // добавляем на инпут обработчик события после ввода хештегов и их обработки на валидность
