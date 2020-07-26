@@ -73,5 +73,6 @@
   window.effects = {
     removeEffect: removeEffect,
     removeClassHidden: removeClassHidden,
+    getEffectPreview: getEffectPreview
   };
 })();

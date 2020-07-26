@@ -59,6 +59,7 @@
     }
     textHashtags.setCustomValidity('');
     textHashtags.style.border = '';
+    textHashtags.removeEventListener('keyup', createHashtagsKeyup);
   };
 
   // добавляем на инпут обработчик события после ввода хештегов и их обработки на валидность
