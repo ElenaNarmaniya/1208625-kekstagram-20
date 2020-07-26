@@ -15,7 +15,6 @@
   var removeClassHidden = window.effects.removeClassHidden;
   var textHashtags = imgUploadForm.querySelector('.text__hashtags'); // инпут для хештегов 121 строка
   var main = document.querySelector('main');
-  var photoEffects = document.querySelectorAll('.effects__radio');
 
   // функция для подстановки размера фото в % при Изменении размера изображения
   var scaleValue = function (value) {
@@ -43,7 +42,6 @@
     removeEffect(); // сброс с фото всех эффектов effects__preview--
     uploadCancelButton.addEventListener('click', closeFormCross); // реагирование на кнопку Закрыть
     document.addEventListener('keydown', closeFormKeyCode); // реагирование на Escape
-    uploadFileButton.removeEventListener('change', showForm);
   };
 
   // реализация закрытия поля для редактирования фото по нажатию на кнопку
@@ -51,16 +49,12 @@
     closePopup();
     imgUploadForm.reset(); // восстанавливаем стандартные значения всем элементам большой формы загрузки и редактирования фото
     uploadCancelButton.removeEventListener('click', closeFormCross); // по клику на кнопку закрытия формы скрываем форму
-    for (var v = 0; v < photoEffects.length; v++) {
-      photoEffects[v].removeEventListener('click', window.effects.getEffectPreview);
-    }
   };
 
   // реализация закрытия поля для редактирования фото по нажатию на Escape
   var closeFormKeyCode = function (evt) {
     if (evt.keyCode === 27 && textHashtags !== document.activeElement && textDescription !== document.activeElement) {
       closeFormCross(); // кроме случаев, когда курсор в поле ввода хештега или комментания
-      document.removeEventListener('keydown', closeFormKeyCode);
     }
   };
 
@@ -75,13 +69,11 @@
     var closeSuccess = function () {
       success.remove();
       document.removeEventListener('keydown', successEscape);
-      success.removeEventListener('click', closeSuccess);
     };
 
     var successEscape = function (evt) {
       if (evt.key === 27) {
         closeSuccess();
-        document.removeEventListener('keydown', successEscape);
       }
     };
 
@@ -103,14 +95,12 @@
 
     var closeError = function () {
       errorWindow.remove();
-      errorWindow.removeEventListener('click', closeError);
       document.removeEventListener('keydown', errorEscape);
     };
 
     var errorEscape = function (evt) {
       if (evt.key === 27) {
         closeError();
-        document.removeEventListener('keydown', errorEscape);
       }
     };
 

@@ -43,7 +43,6 @@
     var newValue = reduceScaleValue();
     scaleImage(newValue);
     scaleControlValue.value = newValue + '%';
-    scaleControlSmaller.removeEventListener('click', scaleSmaller);
   };
 
   // функция по клику на кнопку увеличить
@@ -51,7 +50,6 @@
     var newValue = increaseScaleValue();
     scaleImage(newValue);
     scaleControlValue.value = newValue + '%';
-    scaleControlBigger.removeEventListener('click', scaleBigger);
   };
 
   scaleControlSmaller.addEventListener('click', scaleSmaller);

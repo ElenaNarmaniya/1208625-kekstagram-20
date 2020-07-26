@@ -57,7 +57,6 @@
   var handleLoadMoreComments = function () {
     var photo = findPhoto(sectionBigPicture.dataset.id);
     loadComments(photo);
-    commentsLoader.removeEventListener('click', handleLoadMoreComments);
   };
 
   var loadComments = function (photo) {
@@ -80,13 +79,11 @@
   var closePhoto = function () {
     sectionBigPicture.classList.add('hidden');
     bodyModalOpen.classList.remove('modal-open');
-    buttonClosePhoto.removeEventListener('click', closePhoto);
   };
 
   var closePhotoEscape = function (evt) { // функция закрытия фото по нажатию на escape
     if (evt.keyCode === 27) {
       closePhoto();
-      document.removeEventListener('keydown', closePhotoEscape);
     }
   };
 
@@ -100,14 +97,12 @@
     var picture = evt.target.closest('.picture');
     if (picture) {
       showBigPhoto(findPhoto(picture.dataset.index));
-      picturesSection.removeEventListener('click', showOnePhoto);
     }
   };
 
   var showOnePhotoEnter = function (evt) { // показ любой фотографии по нажатию на Enter
     if (evt.keyCode === 13) {
       showOnePhoto(evt);
-      picturesSection.removeEventListener('keydown', showOnePhotoEnter);
     }
   };
 
