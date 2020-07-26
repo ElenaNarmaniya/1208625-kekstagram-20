@@ -25,21 +25,23 @@
   window.addEventListener('load', function () {
     window.loadData.upload(function (newPhotos) {
       window.filters.clearPicture();
-      for (var g = 0; g < newPhotos.length; g++) {
-        newPhotos[g].id = g;
-        fragment.appendChild(renderPicture(newPhotos[g]));
-        photos.push(newPhotos[g]);
+      for (var i = 0; i < newPhotos.length; i++) {
+        newPhotos[i].id = i;
+        fragment.appendChild(renderPicture(newPhotos[i]));
+        photos.push(newPhotos[i]);
       }
       picturesSection.insertBefore(fragment, imgUpload);
       socialCommentCount.classList.add('hidden');
       commentsLoader.classList.add('hidden');
       imageFiltres.classList.remove('img-filters--inactive');
+    }, function () {
+      // в ТЗ нет явных указаний, что делать в этом случае
     });
   });
 
   window.createPhotos = {
     picturesSection: picturesSection,
-    photos: photos,
+    elements: photos,
     renderPicture: renderPicture,
   };
 })();

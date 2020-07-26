@@ -2,7 +2,6 @@
 
 // работа с ползунком
 (function () {
-  var imgUploadPreview = window.scale.imgUploadPreview;
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var effectLevel = document.querySelector('.effect-level'); // поле fieldset с ползунком
   var effectLevelPin = effectLevel.querySelector('.effect-level__pin'); // кнопка-ползунок
@@ -12,9 +11,9 @@
 
   // возврат ползунка на значение по умолчанию при смене эффектов для фото
   var deleteEffect = function () {
-    effectLevelValue.value = 20; // числовое значение ползунка из разметки
-    effectLevelDepth.style.width = 20 + '%';
-    effectLevelPin.style.left = 20 + '%';
+    effectLevelValue.value = window.effects.DEFAULT_INTENSE; // числовое значение ползунка из разметки
+    effectLevelDepth.style.width = window.effects.DEFAULT_INTENSE + '%';
+    effectLevelPin.style.left = window.effects.DEFAULT_INTENSE + '%';
     imgUploadOverlay.querySelector('img').style.filter = '';
   };
 
@@ -38,17 +37,8 @@
         effectLevelValue.value = Math.round(pinPoint * 100); // числовое значение нахождения ползунка
         effectLevelDepth.style.width = pinPoint * 100 + '%'; // глубина эффекта в %
       }
-      if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
-        imgUploadOverlay.querySelector('.effects__preview--chrome').style.filter = 'grayscale(' + pinPoint + ')';
-      } else if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
-        imgUploadOverlay.querySelector('.effects__preview--sepia').style.filter = 'sepia(' + pinPoint + ')';
-      } else if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
-        imgUploadOverlay.querySelector('.effects__preview--marvin').style.filter = 'invert(' + pinPoint * 100 + '%' + ')';
-      } else if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
-        imgUploadOverlay.querySelector('.effects__preview--phobos').style.filter = 'blur(' + pinPoint * 3 + 'px' + ')';
-      } else if (imgUploadPreview.classList.contains('effects__preview--heat')) {
-        imgUploadOverlay.querySelector('.effects__preview--heat').style.filter = 'brightness(' + pinPoint * 3 + ')';
-      }
+
+      window.effects.setPreviewIntense(pinPoint);
     };
 
     // функция при отпускании клавиши мыши - удалить обработчики

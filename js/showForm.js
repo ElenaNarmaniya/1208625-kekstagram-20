@@ -10,8 +10,8 @@
   var uploadCancelButton = imgUploadForm.querySelector('#upload-cancel'); // кнопка закрытия формы редакт. 68 строка
   var imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay'); // поле для редактирования фото 42 строка
   var textDescription = imgUploadForm.querySelector('.text__description'); // область для ввода комментариев 122 строка
-  var scaleImage = window.scale.scaleImage;
-  var removeEffect = window.effects.removeEffect;
+  var scaleImage = window.scale.change;
+  var removeEffect = window.effects.remove;
   var removeClassHidden = window.effects.removeClassHidden;
   var textHashtags = imgUploadForm.querySelector('.text__hashtags'); // инпут для хештегов 121 строка
   var main = document.querySelector('main');
@@ -49,6 +49,8 @@
     closePopup();
     imgUploadForm.reset(); // восстанавливаем стандартные значения всем элементам большой формы загрузки и редактирования фото
     uploadCancelButton.removeEventListener('click', closeFormCross); // по клику на кнопку закрытия формы скрываем форму
+    document.removeEventListener('keydown', closeFormKeyCode); // реагирование на Escape
+    window.hashtags.clearErrors();
   };
 
   // реализация закрытия поля для редактирования фото по нажатию на Escape

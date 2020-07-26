@@ -12,7 +12,7 @@
   var scaleControlValue = document.querySelector('.scale__control--value'); // значение изменения
 
   // Функция масштабирования изображения
-  var scaleImage = function (value) {
+  var change = function (value) {
     var newScale = value / 100;
     imgUploadPreview.style.transform = 'scale(' + newScale + ')';
   };
@@ -41,14 +41,14 @@
   // функция по клику на кнопку уменьшить
   var scaleSmaller = function () {
     var newValue = reduceScaleValue();
-    scaleImage(newValue);
+    change(newValue);
     scaleControlValue.value = newValue + '%';
   };
 
   // функция по клику на кнопку увеличить
   var scaleBigger = function () {
     var newValue = increaseScaleValue();
-    scaleImage(newValue);
+    change(newValue);
     scaleControlValue.value = newValue + '%';
   };
 
@@ -56,7 +56,7 @@
   scaleControlBigger.addEventListener('click', scaleBigger);
 
   window.scale = {
-    scaleImage: scaleImage,
+    change: change,
     imgUploadPreview: imgUploadPreview
   };
 })();

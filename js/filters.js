@@ -14,20 +14,20 @@
     });
   };
 
-  var getRandomArray = function (array) {
-    return shuffle(array).slice(0, TOTAL_PHOTOS);
+  var getRandomArray = function (photos) {
+    return shuffle(photos).slice(0, TOTAL_PHOTOS);
   };
 
-  var shuffle = function (arr) {
+  var shuffle = function (photos) {
     var j;
     var temp;
-    for (var i = arr.length - 1; i > 0; i--) {
+    for (var i = photos.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
-      temp = arr[j];
-      arr[j] = arr[i];
-      arr[i] = temp;
+      temp = photos[j];
+      photos[j] = photos[i];
+      photos[i] = temp;
     }
-    return arr;
+    return photos;
   };
 
   // устраняем дребезг
@@ -44,18 +44,18 @@
     };
   };
 
-  var getPhoto = function (array) {
+  var getPhoto = function (photos) {
     clearPicture();
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(window.createPhotos.renderPicture(array[i], i));
+    for (var i = 0; i < photos.length; i++) {
+      fragment.appendChild(window.createPhotos.renderPicture(photos[i], i));
     }
     window.createPhotos.picturesSection.appendChild(fragment);
   };
 
   // делаем сортировку фото
   var createPhotosFilter = function (filter) {
-    var photosFilter = window.createPhotos.photos.slice();
+    var photosFilter = window.createPhotos.elements.slice();
     switch (filter) {
       case 'filter-random': // случайные
         photosFilter = getRandomArray(photosFilter);
