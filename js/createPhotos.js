@@ -31,10 +31,10 @@
         photos.push(newPhotos[g]);
       }
       picturesSection.insertBefore(fragment, imgUpload);
+      socialCommentCount.classList.add('hidden');
+      commentsLoader.classList.add('hidden');
+      imageFiltres.classList.remove('img-filters--inactive');
     });
-    socialCommentCount.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
-    imageFiltres.classList.remove('img-filters--inactive');
   });
 
   window.createPhotos = {

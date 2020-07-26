@@ -29,6 +29,7 @@
   var closePopup = function () {
     imgUploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
+    window.pin.deleteEffect();
   };
 
   // функция для показа поля редактирования изображения
@@ -61,7 +62,7 @@
   uploadFileButton.addEventListener('change', showForm);
 
   // сообщение об удачной отправке формы
-  var successSubmitMessage = function () {
+  var showSuccessSubmitMessage = function () {
     var success = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
     main.appendChild(success);
 
@@ -70,24 +71,20 @@
       document.removeEventListener('keydown', successEscape);
     };
 
-    var successButtonClick = function () {
-      closeSuccess();
-    };
-
     var successEscape = function (evt) {
       if (evt.key === 27) {
         closeSuccess();
       }
     };
 
-    success.addEventListener('click', successButtonClick);
+    success.addEventListener('click', closeSuccess);
     document.addEventListener('keydown', successEscape);
   };
 
   var onSuccess = function () {
     closePopup();
     imgUploadForm.reset();
-    successSubmitMessage();
+    showSuccessSubmitMessage();
   };
 
   // сообщение о неудачной отправке формы
@@ -101,17 +98,13 @@
       document.removeEventListener('keydown', errorEscape);
     };
 
-    var errorButtonClick = function () {
-      closeError();
-    };
-
     var errorEscape = function (evt) {
       if (evt.key === 27) {
         closeError();
       }
     };
 
-    errorWindow.addEventListener('click', errorButtonClick);
+    errorWindow.addEventListener('click', closeError);
     document.addEventListener('keydown', errorEscape);
 
     closePopup();
