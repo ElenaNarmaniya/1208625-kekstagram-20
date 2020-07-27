@@ -73,7 +73,7 @@
       document.removeEventListener('keydown', successEscapeHandler);
     };
 
-    var successEscape = function (evt) {
+    var successEscapeHandler = function (evt) {
       if (evt.key === 27) {
         closeSuccessHandler();
       }
