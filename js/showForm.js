@@ -33,54 +33,54 @@
   };
 
   // функция для показа поля редактирования изображения
-  var showForm = function () {
+  var formShowHandler = function () {
     openPopup();
     scaleValue(SCALE_VALUE); // загруженному фото подставить размер 100%
     scaleImage(SCALE_IMAGE_VALUE); // масштабирование фото 1:1
     removeClassHidden(); // показ поля изменения масштаба
     effectLevel.classList.add('hidden'); // при появлении формы скрыть ползунок, т.к. эффект - оригинал
     removeEffect(); // сброс с фото всех эффектов effects__preview--
-    uploadCancelButton.addEventListener('click', closeFormCross); // реагирование на кнопку Закрыть
-    document.addEventListener('keydown', closeFormKeyCode); // реагирование на Escape
+    uploadCancelButton.addEventListener('click', formCrossCloseHandler); // реагирование на кнопку Закрыть
+    document.addEventListener('keydown', formKeyCodeCloseHandler); // реагирование на Escape
   };
 
   // реализация закрытия поля для редактирования фото по нажатию на кнопку
-  var closeFormCross = function () {
+  var formCrossCloseHandler = function () {
     closePopup();
     imgUploadForm.reset(); // восстанавливаем стандартные значения всем элементам большой формы загрузки и редактирования фото
-    uploadCancelButton.removeEventListener('click', closeFormCross); // по клику на кнопку закрытия формы скрываем форму
-    document.removeEventListener('keydown', closeFormKeyCode); // реагирование на Escape
+    uploadCancelButton.removeEventListener('click', formCrossCloseHandler); // по клику на кнопку закрытия формы скрываем форму
+    document.removeEventListener('keydown', formKeyCodeCloseHandler); // реагирование на Escape
     window.hashtags.clearErrors();
   };
 
   // реализация закрытия поля для редактирования фото по нажатию на Escape
-  var closeFormKeyCode = function (evt) {
+  var formKeyCodeCloseHandler = function (evt) {
     if (evt.keyCode === 27 && textHashtags !== document.activeElement && textDescription !== document.activeElement) {
-      closeFormCross(); // кроме случаев, когда курсор в поле ввода хештега или комментания
+      formCrossCloseHandler(); // кроме случаев, когда курсор в поле ввода хештега или комментания
     }
   };
 
   // отлов изменений на поле Загрузить
-  uploadFileButton.addEventListener('change', showForm);
+  uploadFileButton.addEventListener('change', formShowHandler);
 
   // сообщение об удачной отправке формы
   var showSuccessSubmitMessage = function () {
     var success = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
     main.appendChild(success);
 
-    var closeSuccess = function () {
+    var closeSuccessHandler = function () {
       success.remove();
-      document.removeEventListener('keydown', successEscape);
+      document.removeEventListener('keydown', successEscapeHandler);
     };
 
     var successEscape = function (evt) {
       if (evt.key === 27) {
-        closeSuccess();
+        closeSuccessHandler();
       }
     };
 
-    success.addEventListener('click', closeSuccess);
-    document.addEventListener('keydown', successEscape);
+    success.addEventListener('click', closeSuccessHandler);
+    document.addEventListener('keydown', successEscapeHandler);
   };
 
   var onSuccess = function () {
@@ -95,19 +95,19 @@
     errorWindow.querySelector('.error__title').textContent = messageError;
     main.appendChild(errorWindow);
 
-    var closeError = function () {
+    var closeErrorHandler = function () {
       errorWindow.remove();
-      document.removeEventListener('keydown', errorEscape);
+      document.removeEventListener('keydown', errorEscapeHandler);
     };
 
-    var errorEscape = function (evt) {
+    var errorEscapeHandler = function (evt) {
       if (evt.key === 27) {
-        closeError();
+        closeErrorHandler();
       }
     };
 
-    errorWindow.addEventListener('click', closeError);
-    document.addEventListener('keydown', errorEscape);
+    errorWindow.addEventListener('click', closeErrorHandler);
+    document.addEventListener('keydown', errorEscapeHandler);
 
     closePopup();
     imgUploadForm.reset();

@@ -44,7 +44,7 @@
     }
   };
 
-  var setPreview = function (evt) {
+  var previewSetHandler = function (evt) {
     var effect = evt.target.id.replace('effect-', '');
 
     if (effect === Effects.none) {
@@ -77,7 +77,7 @@
 
   // добавление эффекта по клику на радио
   photoEffects.forEach(function (effect) {
-    effect.addEventListener('click', setPreview);
+    effect.addEventListener('click', previewSetHandler);
   });
 
   window.effects = {

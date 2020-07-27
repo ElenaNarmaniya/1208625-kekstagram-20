@@ -39,21 +39,21 @@
   };
 
   // функция по клику на кнопку уменьшить
-  var scaleSmaller = function () {
+  var scaleSmallerHandler = function () {
     var newValue = reduceScaleValue();
     change(newValue);
     scaleControlValue.value = newValue + '%';
   };
 
   // функция по клику на кнопку увеличить
-  var scaleBigger = function () {
+  var scaleBiggerHandler = function () {
     var newValue = increaseScaleValue();
     change(newValue);
     scaleControlValue.value = newValue + '%';
   };
 
-  scaleControlSmaller.addEventListener('click', scaleSmaller);
-  scaleControlBigger.addEventListener('click', scaleBigger);
+  scaleControlSmaller.addEventListener('click', scaleSmallerHandler);
+  scaleControlBigger.addEventListener('click', scaleBiggerHandler);
 
   window.scale = {
     change: change,

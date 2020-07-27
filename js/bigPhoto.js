@@ -28,9 +28,6 @@
   var showBigPhoto = function (photo) {
     loadedCommentsCount = 0; // счетчик
 
-    sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
-    bodyModalOpen.classList.add('modal-open'); // задаем класс Bodу
-
     // запоминаем открытое фото
     sectionBigPicture.dataset.id = photo.id;
 
@@ -40,6 +37,9 @@
     bigPictureImg.querySelector('img').src = photo.url; // просмотр фото в полноэкранном размере
     bigPictureSocial.querySelector('.likes-count').textContent = photo.likes; // записали кол-во лайков
     bigPictureSocial.querySelector('.social__caption').textContent = photo.description; // записали описание фото
+
+    sectionBigPicture.classList.remove('hidden'); // удаляем класс хидден с секции
+    bodyModalOpen.classList.add('modal-open'); // задаем класс Bodу
 
     commentsLoader.classList.remove('hidden');
     socialCommentCountContainer.classList.remove('hidden');
@@ -55,7 +55,7 @@
     socialCommentCount.textContent = summaryCount;
   };
 
-  var handleLoadMoreComments = function () {
+  var commentsLoadHandler = function () {
     var photo = findPhoto(sectionBigPicture.dataset.id);
     loadComments(photo);
   };
@@ -78,18 +78,18 @@
   };
 
 
-  var closePhoto = function () {
+  var photoCloseHandler = function () {
     sectionBigPicture.classList.add('hidden');
     bodyModalOpen.classList.remove('modal-open');
 
-    commentsLoader.removeEventListener('click', handleLoadMoreComments);
-    document.removeEventListener('keydown', closePhotoEscape);
-    buttonClosePhoto.removeEventListener('click', closePhoto);
+    commentsLoader.removeEventListener('click', commentsLoadHandler);
+    document.removeEventListener('keydown', photoCloseEscapeHandler);
+    buttonClosePhoto.removeEventListener('click', photoCloseHandler);
   };
 
-  var closePhotoEscape = function (evt) { // функция закрытия фото по нажатию на escape
+  var photoCloseEscapeHandler = function (evt) { // функция закрытия фото по нажатию на escape
     if (evt.keyCode === ESCAPE_KEY_CODE) {
-      closePhoto();
+      photoCloseHandler();
     }
   };
 
@@ -99,7 +99,7 @@
     });
   };
 
-  var showOnePhoto = function (evt) { // показываем любую фотографию из 25
+  var onePhotoShowHandler = function (evt) { // показываем любую фотографию из 25
     var picture = evt.target.closest('.picture');
     if (!picture) {
       return;
@@ -107,17 +107,17 @@
 
     showBigPhoto(findPhoto(picture.dataset.index));
 
-    commentsLoader.addEventListener('click', handleLoadMoreComments);
-    document.addEventListener('keydown', closePhotoEscape);
-    buttonClosePhoto.addEventListener('click', closePhoto);
+    commentsLoader.addEventListener('click', commentsLoadHandler);
+    document.addEventListener('keydown', photoCloseEscapeHandler);
+    buttonClosePhoto.addEventListener('click', photoCloseHandler);
   };
 
-  var showOnePhotoEnter = function (evt) { // показ любой фотографии по нажатию на Enter
+  var onePhotoShowEnterHandler = function (evt) { // показ любой фотографии по нажатию на Enter
     if (evt.keyCode === ENTER_KEY_CODE) {
-      showOnePhoto(evt);
+      onePhotoShowHandler(evt);
     }
   };
 
-  picturesSection.addEventListener('click', showOnePhoto); // показ любого фото по клику на него
-  picturesSection.addEventListener('keydown', showOnePhotoEnter); // показ любого фото по Enter
+  picturesSection.addEventListener('click', onePhotoShowHandler); // показ любого фото по клику на него
+  picturesSection.addEventListener('keydown', onePhotoShowEnterHandler); // показ любого фото по Enter
 })();

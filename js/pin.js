@@ -25,7 +25,7 @@
     var startCoords = evt.clientX; // начальная горизонтальная координата=0
 
     // функция для определения положения ползунка
-    var movePinMouse = function (moveEvt) {
+    var pinMouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
       var coords = startCoords - moveEvt.clientX; // startCoords=0 - знач. горизонт. коорд. ползунка при его движении
@@ -42,14 +42,14 @@
     };
 
     // функция при отпускании клавиши мыши - удалить обработчики
-    var deletePinMouse = function (upEvt) {
+    var pinMouseDeleteHandler = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousemove', movePinMouse);
-      document.removeEventListener('mouseup', deletePinMouse);
+      document.removeEventListener('mousemove', pinMouseMoveHandler);
+      document.removeEventListener('mouseup', pinMouseDeleteHandler);
     };
 
-    document.addEventListener('mousemove', movePinMouse); // при нажатии на кнопку мыши зафиксировать координату ползунка
-    document.addEventListener('mouseup', deletePinMouse); // при отпускании мыши - удалить обработчики событий
+    document.addEventListener('mousemove', pinMouseMoveHandler); // при нажатии на кнопку мыши зафиксировать координату ползунка
+    document.addEventListener('mouseup', pinMouseDeleteHandler); // при отпускании мыши - удалить обработчики событий
   });
 
   window.pin = {

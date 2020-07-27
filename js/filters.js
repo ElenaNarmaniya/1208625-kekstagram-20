@@ -31,7 +31,7 @@
   };
 
   // устраняем дребезг
-  var clearDebounce = function (list) {
+  var debounceClearHandler = function (list) {
     var nullTimeout = null;
     return function () {
       var parameters = arguments;
@@ -70,9 +70,9 @@
     getPhoto(photosFilter);
   };
 
-  var eliminateDebounce = clearDebounce(createPhotosFilter);
+  var eliminateDebounce = debounceClearHandler(createPhotosFilter);
 
-  var clickFilterButtons = function (evt) {
+  var filterButtonsClickHandler = function (evt) {
     if (!evt.target.classList.contains('img-filters__button--active')) {
       var buttonActive = imageFilters.querySelector('.img-filters__button--active');
       buttonActive.classList.remove('img-filters__button--active');
@@ -81,7 +81,7 @@
   };
 
   filtersButtons.forEach(function (item) {
-    item.addEventListener('click', clickFilterButtons);
+    item.addEventListener('click', filterButtonsClickHandler);
   });
 
   imageFiltersForm.addEventListener('click', function (evt) {
